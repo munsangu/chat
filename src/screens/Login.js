@@ -1,16 +1,21 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Image, Input, Button } from "../components";
 import { images } from "../utils/images";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { validateEmail, removeWhitespace } from "../utils/common";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Alert } from "react-native";
+import { login } from "../utils/firebase";
 
 const Container = styled.View`
   flex: 1;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   background-color: ${({ theme }) => theme.background};
-  padding: 20px;
+  padding: 0 20px;
+  padding-top: ${({ insets: { top } }) => top}px;
+  padding-bottom: ${({ insets: { bottom } }) => bottom}px;
 `;
 
 const Errortext = styled.Text`
@@ -23,16 +28,22 @@ const Errortext = styled.Text`
 `;
 
 const Login = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const passwordRef = useRef();
   const [errorMessage, setErrorMessage] = useState("");
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!(email && password && errorMessage));
+  }, [email, password, errorMessage]);
 
   const _handleEmailChange = (email) => {
-    const changeEmail = removeWhitespace(email);
-    setEmail(changeEmail);
+    const changedEmail = removeWhitespace(email);
+    setEmail(changedEmail);
     setErrorMessage(
-      validateEmail(changeEmail) ? " " : "Please verify your email"
+      validateEmail(changedEmail) ? " " : "Please verify your email"
     );
   };
 
@@ -40,14 +51,21 @@ const Login = ({ navigation }) => {
     setPassword(removeWhitespace(password));
   };
 
-  const _handleLoginButtonPress = () => {};
+  const _handleLoginButtonPress = async () => {
+    try {
+      const user = await login({ email, password });
+      Alert.alert("Login Success", user.email);
+    } catch (e) {
+      Alert.alert("Login Error", e.message);
+    }
+  };
 
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{ flex: 1 }}
       extraScrollHeight={20}
     >
-      <Container>
+      <Container insets={insets}>
         <Image url={images.logo} imageStyle={{ borderRadius: 8 }}></Image>
         <Input
           label="Email"
@@ -68,7 +86,11 @@ const Login = ({ navigation }) => {
           isPassword
         ></Input>
         <Errortext>{errorMessage}</Errortext>
-        <Button title="Login" onPress={_handleLoginButtonPress}></Button>
+        <Button
+          title="Login"
+          onPress={_handleLoginButtonPress}
+          disabled={disabled}
+        ></Button>
         <Button
           title="sign up with email"
           onPress={() => navigation.navigate("Signup")}

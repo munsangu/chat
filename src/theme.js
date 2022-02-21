@@ -11,6 +11,8 @@ export const theme = {
   background: colors.white,
   text: colors.black,
   imageBackground: colors.grey_0,
+  imageButtonBackground: colors.grey_1,
+  imageButtonIcon: colors.white,
   label: colors.grey_1,
   inputPlaceholder: colors.grey_1,
   inputBorder: colors.grey_1,
@@ -18,4 +20,5 @@ export const theme = {
   buttonBackground: colors.blue,
   buttonTitle: colors.white,
   buttonUnfilledTitle: colors.blue,
+  headerTintColor: colors.black,
 };
