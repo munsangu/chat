@@ -25,7 +25,7 @@ const ErrorText = styled.Text`
 `;
 
 const Signup = () => {
-  const { dispatch } = UserContext(UserContext);
+  const { dispatch } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const [photoUrl, setPhotoUrl] = useState(images.photo);
   const [name, setName] = useState("");
