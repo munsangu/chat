@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "chat",
+    "name": "Mini Chat",
     "slug": "chat",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,12 +17,21 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.test.MDevSW",
+      "buildNumber": "1.0.0",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "The app accesses to photo library to upload your profile photo when you are signing up or updating the profile."
+      }
     },
     "android": {
+      "package": "com.test.MDevSW",
+      "versionCode": 1,
+      "permissions": ["CAMERA"],
+      "icon": "./assets/android-icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#3679fe",
+        "foregroundImage": "./assets/android-icon.png"
       }
     },
     "web": {
