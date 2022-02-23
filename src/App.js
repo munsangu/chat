@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StatusBar, Image } from "expo-status-bar";
+import { Image, StatusBar } from "react-native";
 import AppLoading from "expo-app-loading";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
